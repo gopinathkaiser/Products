@@ -22,9 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-@RequiredArgsConstructor
+//@EnableWebSecurity
+//@EnableMethodSecurity
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Autowired
@@ -43,9 +43,11 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/add","/auth/authenticate").permitAll()
+                .requestMatchers("/product/hello").hasAuthority("admin")
                 .and()
                 .authorizeHttpRequests().requestMatchers("/product/**")
-                .authenticated().and()
+                .authenticated()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

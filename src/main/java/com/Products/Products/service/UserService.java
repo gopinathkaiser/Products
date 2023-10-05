@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -36,6 +38,10 @@ public class UserService {
     JwtUtils jwtUtils;
 
     public ResponseEntity<String> insertData(SignupDTO signupDTO) {
+        Optional<UserCredentials> dataFromDb = userSignupRepo.findByEmail(signupDTO.getEmail());
+        System.out.println(dataFromDb);
+        if(!dataFromDb.isEmpty())
+            return new ResponseEntity<>("Email already Exists", HttpStatus.FORBIDDEN);
 
         Role role = userRoleRepo.findByRoleName(signupDTO.getRole().getRoleName());
         if(role == null){
@@ -54,7 +60,6 @@ public class UserService {
     }
 
     public ResponseEntity<String> validateData(LoginDTO loginDTO) {
-//        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),loginDTO.getPassword()));
         UserCredentials user = userSignupRepo.findByEmail(loginDTO.getEmail()).get();
         if(passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())){
             return new ResponseEntity<>(jwtUtils.generateToken(loginDTO.getEmail(),user.getRole().getRoleName()),HttpStatus.OK);
