@@ -51,18 +51,22 @@ public class JwtUtils {
     }
 
 
-    public String generateToken(String userName){
-        Map<String,Object> claims=new HashMap<>();
-        return createToken(claims,userName);
+    public String generateToken(String userName,String role){
+        return createToken(userName,role);
     }
 
-    private String createToken(Map<String, Object> claims, String userName) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userName)
+    private String createToken(String userName,String role) {
+        Claims claim = Jwts.claims()
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*30))
-                .signWith(SignatureAlgorithm.HS256, getSignInKey()).compact();
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*30));
+
+        claim.put("role", role);
+
+        return Jwts.builder()
+                .setClaims(claim)
+                .setSubject(userName)
+                .signWith(SignatureAlgorithm.HS256, getSignInKey())
+                .compact();
     }
 
     private Key getSignInKey() {

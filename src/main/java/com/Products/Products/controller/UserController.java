@@ -22,6 +22,7 @@ public class UserController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<String> validate(@RequestBody LoginDTO loginDTO){
+        System.out.println("controller");
         return productService.validateData(loginDTO);
     }
 

@@ -55,9 +55,9 @@ public class UserService {
 
     public ResponseEntity<String> validateData(LoginDTO loginDTO) {
 //        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),loginDTO.getPassword()));
-        UserCredentials user = userSignupRepo.getByEmail(loginDTO.getEmail());
-        if(user.getPassword().equals(loginDTO.getPassword())){
-            return new ResponseEntity<>(jwtUtils.generateToken(loginDTO.getEmail()),HttpStatus.OK);
+        UserCredentials user = userSignupRepo.findByEmail(loginDTO.getEmail()).get();
+        if(passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())){
+            return new ResponseEntity<>(jwtUtils.generateToken(loginDTO.getEmail(),user.getRole().getRoleName()),HttpStatus.OK);
         }else{
             throw new UsernameNotFoundException("not found");
         }
