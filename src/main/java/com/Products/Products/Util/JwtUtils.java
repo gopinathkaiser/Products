@@ -58,7 +58,7 @@ public class JwtUtils {
     private String createToken(String userName,String role) {
         Claims claim = Jwts.claims()
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*30));
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24));
 
         claim.put("role", role);
 

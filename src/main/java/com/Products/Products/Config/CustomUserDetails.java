@@ -21,7 +21,6 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(UserCredentials userCredentials){
         this.email = userCredentials.getEmail();
         this.password = userCredentials.getPassword();
-        System.out.println(userCredentials.getRole().getRoleName());
         this.authorities = Arrays.stream(userCredentials.getRole().getRoleName().split(" ")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 

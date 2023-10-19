@@ -1,7 +1,7 @@
 package com.Products.Products.Filter;
 
 import com.Products.Products.Config.CustomUserDetailsService;
-import com.Products.Products.Config.JwtAuthenticationEntryPoint;
+//import com.Products.Products.Config.JwtAuthenticationEntryPoint;
 import com.Products.Products.Util.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,8 +27,8 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    @Autowired
+//    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

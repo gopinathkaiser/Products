@@ -30,8 +30,8 @@ public class SecurityConfig {
     @Autowired
     JwtFilter jwtFilter;
 
-    @Autowired
-    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    @Autowired
+//    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -42,16 +42,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/add","/auth/authenticate").permitAll()
+                .requestMatchers("/auth/add","/auth/authenticate","/products/**","/admin/**","Common/**","seller/**").permitAll()
                 .requestMatchers("/product/hello").hasAuthority("admin")
+//                .requestMatchers("/seller").hasAuthority("seller")
+                .requestMatchers("/seller/getSeller").hasAuthority("admin")
                 .and()
-                .authorizeHttpRequests().requestMatchers("/product/**")
+                .authorizeHttpRequests().requestMatchers("/product/**","products/**")
                 .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .and()
+//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SomeController {
 
     @GetMapping("hello")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     public String get(){
         return "I am get";
     }

@@ -26,4 +26,5 @@ public class UserCredentials {
 
     @ManyToOne
     private Role role;
+
 }
