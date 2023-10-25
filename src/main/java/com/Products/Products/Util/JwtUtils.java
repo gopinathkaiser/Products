@@ -50,7 +50,6 @@ public class JwtUtils {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-
     public String generateToken(String userName,String role){
         return createToken(userName,role);
     }

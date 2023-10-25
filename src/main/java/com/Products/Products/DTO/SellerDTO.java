@@ -8,11 +8,10 @@ import java.util.List;
 @Data
 public class SellerDTO {
 
-    private String email;
+
+    private Long uid;
 
     private String sellerName;
 
     private String sellerAddress;
-
-    private List<Products> products;
 }

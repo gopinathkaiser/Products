@@ -11,5 +11,5 @@ import java.util.List;
 public interface SellerRepoService {
     ResponseEntity<String> addSeller(SellerDTO sellerDTO);
 
-    ResponseEntity<List<Seller>> getSeller();
+    List<Seller> getSeller();
 }

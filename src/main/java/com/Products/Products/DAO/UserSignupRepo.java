@@ -8,9 +8,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserSignupRepo extends JpaRepository<UserCredentials, Long> {
-    Optional<UserCredentials> getByEmail(String email);
-
-    Optional<UserCredentials> findByName(String username);
+//    Optional<UserCredentials> getByEmail(String email);
+//
+//    Optional<UserCredentials> findByName(String username);
 
     Optional<UserCredentials> findByEmail(String username);
+
+    Optional<UserCredentials> findByuid(Long uid);
 }

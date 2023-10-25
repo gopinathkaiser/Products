@@ -13,9 +13,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -40,21 +42,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/auth/add","/auth/authenticate","/products/**","/admin/**","Common/**","seller/**").permitAll()
-                .requestMatchers("/product/hello").hasAuthority("admin")
-//                .requestMatchers("/seller").hasAuthority("seller")
-                .requestMatchers("/seller/getSeller").hasAuthority("admin")
-                .and()
-                .authorizeHttpRequests().requestMatchers("/product/**","products/**")
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request -> request.requestMatchers("/auth/add","/auth/authenticate","seller/**","Common/**","admin/**","/**").permitAll()
+                        .requestMatchers("/product/hello").hasAuthority("admin")
+                        .requestMatchers("/seller/getSeller").hasAuthority("admin")
+                        .requestMatchers("/product/**","products/**").authenticated()
+
+                )
+
+//                .requestMatchers("/product/hello").hasAuthority("admin")
+//                .requestMatchers("/seller/getSellerProdcuts/**").hasAuthority("seller")
+//                .requestMatchers("products/addProducts").hasAuthority("seller")
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .and()
 //                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -62,19 +63,24 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+
         return  config.getAuthenticationManager();
     }
 
     @Bean
     public UserDetailsService userDetailsService(){
+
         return new CustomUserDetailsService();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
+
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
+
         return authenticationProvider;
     }
 

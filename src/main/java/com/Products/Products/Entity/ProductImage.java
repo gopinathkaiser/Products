@@ -6,24 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.List;
-
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class Seller implements Serializable {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long sid;
+    private Long fileId;
 
-    private Long uid;
+    private String fileName;
 
-    private String sellerName;
+    private String fileType;
 
-    private String sellerAddress;
+    @Lob
+    private byte[] data;
 
 }

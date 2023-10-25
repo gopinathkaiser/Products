@@ -8,13 +8,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
 
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Products {
+//@RedisHash("Product")
+public class Products implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,6 +30,9 @@ public class Products {
 
     private String productCategory;
 
-    private SellerEnum status=SellerEnum.PENDING;
+    private SellerEnum status;
+
+    @ManyToOne
+    private Seller seller;
 }
 
